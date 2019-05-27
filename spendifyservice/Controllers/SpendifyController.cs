@@ -25,7 +25,6 @@ namespace spendifyservice.Controllers
                 while (dtrdr.Read())
                 {
                     spenddetails objSpendDetails = new spenddetails();
-
                     objSpendDetails.id = Convert.ToInt32(dtrdr["id"].ToString());
                     objSpendDetails.spenderName = dtrdr["spender_name"].ToString();
                     objSpendDetails.spendDescription = dtrdr["spend_description"].ToString();
