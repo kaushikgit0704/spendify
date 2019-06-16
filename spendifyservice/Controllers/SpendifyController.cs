@@ -43,5 +43,37 @@ namespace spendifyservice.Controllers
             }
             return spenddetailscollection;
         }
-    }
+
+        [HttpPost]
+        [Route("api/addSpends")]
+        public void addNewSpend(List<spenddetails> spends)
+        {
+            if (spends.Count > 0)
+            {
+                SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["spendifyconnection"].ConnectionString);
+                foreach (spenddetails spend in spends)
+                {
+                    SqlCommand cmd = new SqlCommand("[dbo].[addNewSpend]", conn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@spenderName", spend.spenderName);
+                    cmd.Parameters.AddWithValue("@spendDesc", spend.spendDescription);
+                    cmd.Parameters.AddWithValue("@spendAmount", Convert.ToDecimal(spend.spendAmount));
+                    cmd.Parameters.AddWithValue("@spendDate", Convert.ToDateTime(spend.spenddate));
+                    try
+                    {
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                        conn.Close();
+                    }
+                    catch (Exception exp)
+                    {
+                    }
+                    finally
+                    {
+                        conn.Close();
+                    }
+                }                
+            }
+        }
+    }    
 }
